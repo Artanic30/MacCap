@@ -237,7 +237,7 @@ def main():
 
     # multi-noise during inference generation
     parser.add_argument('--num_noise', default=1, type=int)
-    parser.add_argument('--noise_k', default=0., type=float, help='noise variance during inference')
+    parser.add_argument('--noise_k', default=0.016, type=float, help='noise variance during inference')
     parser.add_argument('--noise_N_var', default=0., type=float, nargs='+',
                         help='noise variance for generate multiple text in reconstruction sampling')
     parser.add_argument('--num_reconstruction', default=10, type=int)

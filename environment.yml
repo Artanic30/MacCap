@@ -1,4 +1,4 @@
-name: capvqa
+name: MacCap
 channels:
   - https://mirrors.ustc.edu.cn/anaconda/cloud/conda-forge
   - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
@@ -218,4 +218,4 @@ dependencies:
     - werkzeug==2.3.7
     - yarl==1.9.4
     - zipp==3.15.0
-prefix: /public/home/qiult/.conda/envs/capvqa
+prefix: ~/.conda/envs/capvqa
