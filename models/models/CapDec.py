@@ -30,27 +30,6 @@ class DeCap(BaseModel):
         # self.aligner = TransformerDecoder(decoder_layer, 4, decoder_norm)
         # self.variance = args.noise_variance
 
-    @torch.no_grad()
-    def embed_img(self, img):
-        cls_features, img_context, img_proj = self.clip_model.visual(img.half())
-        cls_features /= cls_features.norm(dim=-1, keepdim=True)
-        queries = self.query_fusion.weight.unsqueeze(0).repeat(1, 1, 1)
-        inter_hs = self.aligner(queries.permute(1, 0, 2),
-                                cls_features.unsqueeze(0).to(torch.float32), pos=None)
-        embedding_clip = self.align_proj(inter_hs.permute(1, 0, 2))
-        return embedding_clip
-
-    @torch.no_grad()
-    def embed_text(self, clip_tokens):
-        bs = clip_tokens.shape[0]
-        clip_features, contex_text, text_proj = self.clip_model.encode_text(clip_tokens)
-        clip_features /= clip_features.norm(dim=-1, keepdim=True)
-
-        queries = self.query_fusion.weight.unsqueeze(0).repeat(bs, 1, 1)
-        inter_hs = self.aligner(queries.permute(1, 0, 2),
-                                clip_features.unsqueeze(0).to(torch.float32), pos=None)
-        embedding_clip = self.align_proj(inter_hs.permute(1, 0, 2))
-        return embedding_clip
 
     def get_uniform_ball_noise(self, input_shape, radius=0.1):
         uniform_noise_ball = torch.randn(input_shape)  # normal distribution

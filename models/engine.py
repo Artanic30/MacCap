@@ -91,17 +91,14 @@ def eval_caption(model, output_dir, args, val_dataloader, device, epoch='last', 
     print(f'Saving to {save_path}')
     tmp_path = os.path.join(output_dir, 'tmp')
     os.makedirs(tmp_path, exist_ok=True)
-    if os.path.exists(save_path):
-        with open(save_path, 'r') as f:
+    print(split)
+    if split == 'test':
+        with open(args.test_path, 'r') as f:
             results = json.load(f)
-    else:
-        print(split)
-        if split == 'test':
-            with open(args.test_path, 'r') as f:
-                results = json.load(f)
-        elif split == 'val':
-            with open(args.val_path, 'r') as f:
-                results = json.load(f)
+    elif split == 'val':
+        with open(args.val_path, 'r') as f:
+            results = json.load(f)
+
     results = {i['image_name']: i for i in results}
     count = 0
 
@@ -143,7 +140,7 @@ def eval_caption(model, output_dir, args, val_dataloader, device, epoch='last', 
             with torch.autocast(device_type='cuda', dtype=torch.float16):
                 output_text = model.generate(image, args.generation_strategy)
 
-        if args.generation_strategy == 'contrastive' or args.generation_multi:
+        if args.generation_multi:
             clip_model = model.clip_model
 
             image_features, _, _ = clip_model.visual(image.half())
