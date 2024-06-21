@@ -142,5 +142,5 @@ def build_model(args):
         llm.float()
     # tokenizer_llm = AutoTokenizer.from_pretrained("Manuel030/alpaca-opt-6.7b", use_fast=False)
 
-    model = DeCap(clip_model, llm, tokenizer, args, clip_model.text_projection.shape[0])
+    model = MacCap(clip_model, llm, tokenizer, args, clip_model.text_projection.shape[0])
     return model
