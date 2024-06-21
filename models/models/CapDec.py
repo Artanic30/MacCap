@@ -11,10 +11,10 @@ from models.BaseModel import BaseModel, MLP, TransformerEncoder, LayerNorm, Tran
     TransformerDecoder, TransformerDecoderLayer
 import math
 
-class DeCap(BaseModel):
+class CapDec(BaseModel):
 
     def __init__(self, clip_model, llm, tokenizer, args=None, prefix_size: int = 512):
-        super(DeCap, self).__init__(clip_model, llm, tokenizer, args)
+        super(CapDec, self).__init__(clip_model, llm, tokenizer, args)
 
         self.align_proj = MLP(prefix_size, prefix_size, self.vocab_dim, 3)
         self.variance = args.noise_variance
@@ -114,5 +114,5 @@ def build_model(args):
         p.requires_grad = False
     # tokenizer_llm = AutoTokenizer.from_pretrained("Manuel030/alpaca-opt-6.7b", use_fast=False)
 
-    model = DeCap(clip_model, llm, tokenizer, args)
+    model = CapDec(clip_model, llm, tokenizer, args)
     return model
